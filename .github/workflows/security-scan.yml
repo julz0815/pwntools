@@ -43,7 +43,7 @@ jobs:
         - name: get archive
           uses: actions/download-artifact@v2
           with:
-            name: archive.zip
+            name: my-artifact
         - name: pipeline-scan action step
           id: pipelien-scan
           uses: veracode/Veracode-pipeline-scan-action@pipeline-scan-beta-v0.0.3
