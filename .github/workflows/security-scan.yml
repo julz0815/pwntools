@@ -9,15 +9,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    run: zip archive.zip ./ -x ".git*"
-    - uses: actions/upload-artifact@v1
-    with:
-    name: my-artifact
-    path: archive.zip
+      - uses: actions/checkout@v2
+      - name: zip project
+        run: zip archive.zip ./ -x ".git*"
+      - uses: actions/upload-artifact@v1
+        with:
+          name: my-artifact
+          path: archive.zip
     
     
-   veracode-sca-task:
+  veracode-sca-task:
     runs-on: ubuntu-latest
     name: Scan remote repository for Issues
 
@@ -31,7 +32,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
     
-   pipeline_scan:
+  pipeline_scan:
       needs: build
       runs-on: ubuntu-latest
       name: pipeline scan
