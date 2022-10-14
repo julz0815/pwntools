@@ -1,0 +1,54 @@
+name: Development Branch Workflow
+
+
+on:
+  push:
+
+jobs:
+  # This step will build the maven application
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    run: zip archive.zip ./ -x ".git*"
+    - uses: actions/upload-artifact@v1
+    with:
+    name: my-artifact
+    path: archive.zip
+    
+    
+   veracode-sca-task:
+    runs-on: ubuntu-latest
+    name: Scan remote repository for Issues
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run Veracode SCA
+        env:
+          SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
+        uses: veracode/veracode-sca@v1.0.9
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+    
+   pipeline_scan:
+      needs: build
+      runs-on: ubuntu-latest
+      name: pipeline scan
+      steps:
+        - name: checkout repo
+          uses: actions/checkout@v2
+
+        - name: get archive
+          uses: actions/download-artifact@v2
+          with:
+            name: archive.zip
+        - name: pipeline-scan action step
+          id: pipelien-scan
+          uses: veracode/Veracode-pipeline-scan-action@pipeline-scan-beta-v0.0.3
+          with:
+            vid: ${{ secrets.VID }}
+            vkey: ${{ secrets.VKEY }}
+            file: "archive.zip" 
+            request_policy: "VeraDemo Policy"
+            fail_build: false
