@@ -1,4 +1,4 @@
-name: Development Branch Workflow
+name: Python Security Scan Workflow
 
 
 on:
@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: zip project
         run: zip -r archive.zip ./* -x "*.zip"
       - uses: actions/upload-artifact@v3
@@ -24,7 +24,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Veracode SCA
         env:
           SRCCLR_API_TOKEN: ${{ secrets.SRCCLR_API_TOKEN }}
@@ -38,7 +38,7 @@ jobs:
       name: pipeline scan
       steps:
         - name: checkout repo
-          uses: actions/checkout@v2
+          uses: actions/checkout@v3
 
         - name: get archive
           uses: actions/download-artifact@v3
@@ -53,3 +53,15 @@ jobs:
             file: "archive.zip" 
             debug: 1
             fail_build: false
+            
+            
+  ###### AUTOREMEDTAION MAY GOES HERE ######
+  #autoremediation:
+  #    needs: pipeline_scan
+  #    runs-on: ubuntu-latest
+  #    name: autoremediation
+  #    steps:
+  #      - name: get archive
+  #        uses: actions/download-artifact@v3
+  #        with:
+  #          name: Veracode Pipeline-Scan Results
