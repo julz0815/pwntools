@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: zip project
-        run: zip archive.zip ./* -x "*.zip"
+        run: zip -r archive.zip ./* -x "*.zip"
       - uses: actions/upload-artifact@v3
         with:
           name: my-artifact
