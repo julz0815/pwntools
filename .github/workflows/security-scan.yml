@@ -11,8 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: zip project
-        run: zip archive.zip ./* -x ".git*"
-      - uses: actions/upload-artifact@v1
+        run: zip archive.zip ./*
+      - uses: actions/upload-artifact@v3
         with:
           name: my-artifact
           path: archive.zip
@@ -41,7 +41,7 @@ jobs:
           uses: actions/checkout@v2
 
         - name: get archive
-          uses: actions/download-artifact@v2
+          uses: actions/download-artifact@v3
           with:
             name: my-artifact
         - name: pipeline-scan action step
